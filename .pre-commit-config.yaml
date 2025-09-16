@@ -1,3 +1,5 @@
+fail_fast: true
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -13,29 +15,58 @@ repos:
       - id: debug-statements
       - id: check-docstring-first
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.0
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
     hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format
+      - id: prettier
+        types_or: [yaml, json5]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.45.0
+    hooks:
+      - id: markdownlint
+        args:
+          [
+            "--fix",
+            "--config",
+            "pyproject.toml",
+            "--configPointer",
+            "/tool/markdown/lint",
+          ]
+        types: [markdown]
 
   - repo: local
     hooks:
-      - id: pyright-check
-        name: pyright-check
+      - id: ruff-format
+        name: Ruff Format
+        entry: uv run ruff
+        args: [format]
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: ruff
+        name: Ruff
+        entry: uv run ruff
+        args: ["check", "--fix", "--exit-non-zero-on-fix"]
+        types: [python]
+        language: system
+        pass_filenames: false
+      - id: pyright
+        name: pyright
         entry: uv run pyright
         language: system
+        types: [python]
         pass_filenames: false
-        always_run: true
-        verbose: true
-
-  - repo: local
-    hooks:
-      - id: pytest-check
-        name: pytest-check
+      - id: uv-lock-check
+        name: Check uv.lock is up to date
+        entry: uv lock --check
+        language: system
+        files: ^(pyproject\.toml|uv\.lock)$
+        pass_filenames: false
+      - id: pytest-models
+        name: Run model tests
         entry: uv run pytest --tb=short tests/test_models.py
         language: system
+        types: [python]
         pass_filenames: false
-        always_run: true
         stages: [pre-push]

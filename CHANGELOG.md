@@ -8,14 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Comprehensive CONTRIBUTING.md guide
 - CODE_OF_CONDUCT.md following Contributor Covenant
 - CHANGELOG.md for version tracking
 - Improved README.md with correct repository URLs
 
-## [0.1.0] - 2025-01-17
+## [0.1.0] - 2025-09-17
 
-### Added
+### Features
+
 - Initial release of MCP Docker Executor
 - Multi-language execution support (Python 3.11, Node.js 22.x, .NET 8.0, Bash)
 - Docker image management and creation
@@ -33,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive documentation and examples
 
 ### Technical Details
+
 - **Python**: 3.11+ with uv package management
 - **Docker**: Multi-stage build with Python, Node.js, .NET SDK
 - **API**: FastAPI with async/await support
@@ -41,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI/CD**: Pre-commit hooks and automated quality checks
 
 ### Dependencies
+
 - mcp[cli]>=1.14.0
 - fastapi>=0.104.0
 - uvicorn[standard]>=0.24.0

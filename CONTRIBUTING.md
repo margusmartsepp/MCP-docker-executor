@@ -147,6 +147,7 @@ By contributing, you agree that your contributions will be licensed under the MI
 ## Development Guidelines
 
 See `CLAUDE.md` for detailed development guidelines specific to this project, including:
+
 - Package management with uv
 - Code quality tools configuration
 - Git commit conventions

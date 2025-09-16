@@ -24,28 +24,33 @@ A Python-based Master Control Program (MCP) server that creates Linux Docker ima
 ## Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/margusmartsepp/MCP-docker-executor.git
    cd MCP-docker-executor
    ```
 
 2. **Install dependencies with uv**:
+
    ```bash
    uv sync --frozen --all-extras --dev
    ```
 
 3. **Set up pre-commit hooks**:
+
    ```bash
    uv tool install pre-commit --with pre-commit-uv --force-reinstall
    pre-commit install
    ```
 
 4. **Build the Docker image**:
+
    ```bash
    docker build -t mcp-executor-base .
    ```
 
 5. **Verify installation**:
+
    ```bash
    docker run --rm mcp-executor-base python --version
    docker run --rm mcp-executor-base node --version
@@ -189,11 +194,11 @@ uv run python -m mcp_docker_executor.cli delete-file <file-id>
 - `GET /executions/{id}` - Get execution result
 - `GET /health` - Health check
 
-### Package Management
+### Package Management API
 
 - `POST /packages/install` - Install package
 
-### File Management
+### File Management API
 
 - `POST /files/upload` - Upload file
 - `GET /files` - List files
@@ -320,6 +325,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 For issues and questions:
+
 - 📝 [Create an issue on GitHub](https://github.com/margusmartsepp/MCP-docker-executor/issues)
 - 📚 Check the documentation in `docs/`
 - 🧪 Review test examples in `tests/`

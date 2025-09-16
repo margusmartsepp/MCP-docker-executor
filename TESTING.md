@@ -20,6 +20,7 @@ Before running tests, ensure you have:
 ## Code Quality Tools
 
 ### Run All Quality Checks
+
 ```bash
 # Run all pre-commit hooks (recommended)
 pre-commit run --all-files
@@ -32,6 +33,7 @@ uv run ruff format .
 ```
 
 ### Pre-commit Hooks
+
 ```bash
 # Install pre-commit hooks (one-time setup)
 uv tool install pre-commit --with pre-commit-uv --force-reinstall
@@ -45,6 +47,7 @@ pre-commit run
 ```
 
 ### Individual Quality Checks
+
 ```bash
 # Type checking only
 uv run pyright
@@ -62,31 +65,37 @@ uv run ruff format .
 ## Test Categories
 
 ### Integration Tests (`@pytest.mark.integration`)
+
 - Test individual components with real Docker containers
 - Use actual Docker images and containers
 - Test Docker manager, file manager, and execution handlers
 
 ### End-to-End Tests (`@pytest.mark.e2e`)
+
 - Test complete workflows through the API
 - Use HTTP requests to test server endpoints
 - Test full user scenarios
 
 ### Docker Tests (`@pytest.mark.docker`)
+
 - Tests that require Docker to be running
 - Automatically skipped if Docker is not available
 
 ### Slow Tests (`@pytest.mark.slow`)
+
 - Tests that take longer to run
 - Can be skipped for quick development cycles
 
 ## Running Tests
 
 ### Run All Tests
+
 ```bash
 uv run pytest tests/ -v
 ```
 
 ### Run Specific Test Categories
+
 ```bash
 # Integration tests only
 uv run pytest tests/ -m integration -v
@@ -102,6 +111,7 @@ uv run pytest tests/ -m "not slow" -v
 ```
 
 ### Run Specific Test Files
+
 ```bash
 # Test Docker manager
 uv run pytest tests/test_docker_manager.py -v
@@ -114,6 +124,7 @@ uv run pytest tests/test_models.py -v
 ```
 
 ### Run Specific Tests
+
 ```bash
 # Test Python execution
 uv run pytest tests/test_docker_manager.py::TestDockerManager::test_execute_python_code -v
@@ -125,11 +136,13 @@ uv run pytest tests/test_docker_manager.py::TestDockerManager::test_file_upload_
 ## Test Structure
 
 ### `tests/conftest.py`
+
 - Pytest configuration and fixtures
 - Docker manager fixtures
 - Test image creation and cleanup
 
 ### `tests/test_docker_manager.py`
+
 - Integration tests for Docker operations
 - Image creation and management
 - Code execution in different languages
@@ -137,11 +150,13 @@ uv run pytest tests/test_docker_manager.py::TestDockerManager::test_file_upload_
 - File upload and management
 
 ### `tests/test_server.py`
+
 - End-to-end tests for API endpoints
 - HTTP request/response testing
 - Complete workflow testing
 
 ### `tests/test_models.py`
+
 - Unit tests for Pydantic models
 - Data validation testing
 - Serialization/deserialization testing
@@ -149,11 +164,13 @@ uv run pytest tests/test_docker_manager.py::TestDockerManager::test_file_upload_
 ## Docker Image Build Testing
 
 ### Build the Image
+
 ```bash
 docker build -t mcp-executor-base .
 ```
 
 ### Verify Runtime Installation
+
 ```bash
 # Check Python
 docker run --rm mcp-executor-base python --version
@@ -167,6 +184,7 @@ docker run --rm mcp-executor-base dotnet --version
 ```
 
 ### Test Multi-language Support
+
 ```bash
 # Python execution
 docker run --rm mcp-executor-base python -c "print('Python works!')"
@@ -183,6 +201,7 @@ docker run --rm mcp-executor-base dotnet --version
 ### Package Management Testing
 
 #### Python Package Installation
+
 ```bash
 # Test pip installation
 uv run python -m mcp_docker_executor.cli create python --image-name test-python
@@ -191,6 +210,7 @@ uv run python -m mcp_docker_executor.cli exec python "import requests; print('Re
 ```
 
 #### Node.js Package Installation
+
 ```bash
 # Test npm installation
 uv run python -m mcp_docker_executor.cli create node --image-name test-node
@@ -199,6 +219,7 @@ uv run python -m mcp_docker_executor.cli exec node "const _ = require('lodash');
 ```
 
 #### C# Package Installation
+
 ```bash
 # Test NuGet installation
 uv run python -m mcp_docker_executor.cli create csharp --image-name test-csharp
@@ -209,6 +230,7 @@ uv run python -m mcp_docker_executor.cli exec csharp "using Newtonsoft.Json; Con
 ### File Management Testing
 
 #### File Upload and Execution
+
 ```bash
 # Upload Python file
 uv run python -m mcp_docker_executor.cli upload-file "test.py" "print('Hello from file!')" python
@@ -224,6 +246,7 @@ uv run python -m mcp_docker_executor.cli delete-file <file-id>
 ```
 
 #### File Management API Testing
+
 ```bash
 # Upload file via API
 curl -X POST http://localhost:8000/files/upload \
@@ -240,6 +263,7 @@ curl http://localhost:8000/files/stats
 ### Streaming Execution Testing
 
 #### Start Streaming Execution
+
 ```bash
 # Start streaming execution
 curl -X POST http://localhost:8000/execute/stream \
@@ -256,18 +280,21 @@ curl http://localhost:8000/executions/<execution-id>/stream
 ## Test Data and Fixtures
 
 ### Test Images
+
 - `test-multi-lang`: Python, Node.js, C# support
 - `test-python`: Python-only image
 - `test-node`: Node.js-only image
 - `test-csharp`: C#-only image
 
 ### Test Files
+
 - Python test files with factorial calculations
 - Node.js test files with factorial calculations
 - C# test files with factorial calculations
 - Simple "Hello World" test files
 
 ### Test Packages
+
 - Python: `requests`, `numpy`, `pandas`
 - Node.js: `lodash`, `express`, `axios`
 - C#: `Newtonsoft.Json`, `System.Text.Json`
@@ -277,32 +304,41 @@ curl http://localhost:8000/executions/<execution-id>/stream
 ### Common Issues
 
 #### Docker Not Available
-```
+
+```python
 pytest.skip("Docker is not available")
 ```
+
 **Solution**: Start Docker Desktop and ensure it's running
 
 #### Image Build Failures
-```
+
+```python
 pytest.skip("Failed to create test image: ...")
 ```
+
 **Solution**: Check Docker daemon, available disk space, and network connectivity
 
 #### Container Execution Failures
-```
+
+```python
 assert response.status == "completed"
 ```
+
 **Solution**: Check container logs, resource limits, and code syntax
 
 #### API Connection Failures
-```
+
+```python
 httpx.ConnectError: [Errno 111] Connection refused
 ```
+
 **Solution**: Ensure MCP server is running on localhost:8000
 
 ### Debug Mode
 
 Run tests with debug output:
+
 ```bash
 python -m pytest tests/ -v -s --log-cli-level=DEBUG
 ```
@@ -310,6 +346,7 @@ python -m pytest tests/ -v -s --log-cli-level=DEBUG
 ### Test Isolation
 
 Each test is isolated and cleans up after itself:
+
 - Docker images are removed after tests
 - Uploaded files are deleted
 - Containers are stopped and removed
@@ -317,6 +354,7 @@ Each test is isolated and cleans up after itself:
 ## Performance Testing
 
 ### Resource Limits Testing
+
 ```bash
 # Test memory limits
 python -m mcp_docker_executor.cli exec python "import sys; print(f'Memory: {sys.getsizeof(range(1000000))} bytes')" --resource-limits '{"memory_mb": 256}'
@@ -329,6 +367,7 @@ python -m mcp_docker_executor.cli exec python "import time; time.sleep(10)" --re
 ```
 
 ### Concurrent Execution Testing
+
 ```bash
 # Run multiple executions simultaneously
 for i in {1..5}; do
@@ -340,6 +379,7 @@ wait
 ## Continuous Integration
 
 ### GitHub Actions Example
+
 ```yaml
 name: Tests
 on: [push, pull_request]
@@ -364,11 +404,13 @@ jobs:
 ## Test Coverage
 
 Generate test coverage report:
+
 ```bash
 python -m pytest tests/ --cov=src/mcp_docker_executor --cov-report=html --cov-report=term
 ```
 
 View coverage report:
+
 ```bash
 open htmlcov/index.html  # macOS
 start htmlcov/index.html  # Windows

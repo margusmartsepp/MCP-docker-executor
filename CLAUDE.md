@@ -172,12 +172,14 @@ git commit --trailer "Github-Issue:#<number>"
 ## Development Workflow
 
 1. **Setup**
+
    ```bash
    uv sync --frozen --all-extras --dev
    pre-commit install
    ```
 
 2. **Daily Development**
+
    ```bash
    uv run ruff check . --fix
    uv run ruff format .
@@ -186,6 +188,7 @@ git commit --trailer "Github-Issue:#<number>"
    ```
 
 3. **Testing New Features**
+
    ```bash
    # Test the MCP server
    uv run python -m mcp_docker_executor.server
