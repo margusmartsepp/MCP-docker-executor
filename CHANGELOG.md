@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed execution response mismatch - server was running old cached code with different response structure
+- Fixed file info endpoint - properly includes content field in response
+- Fixed file delete endpoint - correctly returns 404 for non-existent files
+- Fixed file stats endpoint - handles exceptions properly
+- Fixed async execution timing - server now completes execution before returning response
+- Resolved test failures caused by server running outdated cached code
+
 ### Added
 
 - Comprehensive CONTRIBUTING.md guide
