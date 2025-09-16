@@ -260,9 +260,7 @@ async def stream_execution_logs(execution_id: str):
 
     async def generate_logs():
         while True:
-            progress = await mcp_server.docker_manager.get_execution_progress(
-                execution_id
-            )
+            progress = await mcp_server.docker_manager.get_execution_progress(execution_id)
             if not progress:
                 break
 

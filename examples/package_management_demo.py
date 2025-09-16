@@ -65,9 +65,7 @@ async def install_package(image_id: str, language: str, package_name: str) -> st
             raise Exception(f"Package installation failed: {result['error_message']}")
 
 
-async def execute_code(
-    image_id: str, language: str, code: str, expected_output: str | None = None
-) -> bool:
+async def execute_code(image_id: str, language: str, code: str, expected_output: str | None = None) -> bool:
     """Execute code and verify the output."""
     print(f"🚀 Executing {language} code...")
 
@@ -89,9 +87,7 @@ async def execute_code(
         # Poll for completion
         for _i in range(60):
             await asyncio.sleep(1)
-            status_response = await client.get(
-                f"{SERVER_URL}/executions/{execution_id}"
-            )
+            status_response = await client.get(f"{SERVER_URL}/executions/{execution_id}")
             status_response.raise_for_status()
             status = status_response.json()
 
@@ -105,10 +101,7 @@ async def execute_code(
 
                 return True
             elif status["status"] == "failed":
-                print(
-                    f"❌ {language} execution failed: "
-                    f"{status.get('error_message', 'Unknown error')}"
-                )
+                print(f"❌ {language} execution failed: {status.get('error_message', 'Unknown error')}")
                 print(f"Output: {status['stdout']}")
                 print(f"Errors: {status['stderr']}")
                 return False
@@ -153,9 +146,7 @@ async def execute_file(file_id: str, image_id: str) -> bool:
         # Poll for completion
         for _i in range(60):
             await asyncio.sleep(1)
-            status_response = await client.get(
-                f"{SERVER_URL}/executions/{execution_id}"
-            )
+            status_response = await client.get(f"{SERVER_URL}/executions/{execution_id}")
             status_response.raise_for_status()
             status = status_response.json()
 
@@ -164,10 +155,7 @@ async def execute_file(file_id: str, image_id: str) -> bool:
                 print(f"Output: {status['stdout']}")
                 return True
             elif status["status"] == "failed":
-                print(
-                    f"❌ File execution failed: "
-                    f"{status.get('error_message', 'Unknown error')}"
-                )
+                print(f"❌ File execution failed: {status.get('error_message', 'Unknown error')}")
                 print(f"Output: {status['stdout']}")
                 print(f"Errors: {status['stderr']}")
                 return False
@@ -188,10 +176,7 @@ async def list_files() -> dict[str, Any]:
         print(f"Total files: {result['total_count']}")
 
         for file_info in result["files"]:
-            print(
-                f"  - {file_info['filename']} ({file_info['language']}) - "
-                f"{file_info['file_id'][:8]}..."
-            )
+            print(f"  - {file_info['filename']} ({file_info['language']}) - {file_info['file_id'][:8]}...")
 
         return result
 
@@ -306,9 +291,7 @@ public class Program
 """
 
         # Install Newtonsoft.Json package
-        csharp_image_id = await install_package(
-            base_image_id, "csharp", "Newtonsoft.Json"
-        )
+        csharp_image_id = await install_package(base_image_id, "csharp", "Newtonsoft.Json")
 
         # Execute code with Newtonsoft.Json
         await execute_code(csharp_image_id, "csharp", csharp_code, "Newtonsoft.Json")
@@ -337,9 +320,7 @@ print(f"combinations(10, 3) = {combinations(10, 3)}")
 print("✅ Python combinations calculation completed!")
 """
 
-        python_file_id = await upload_file(
-            "combinations.py", python_file_content, "python"
-        )
+        python_file_id = await upload_file("combinations.py", python_file_content, "python")
 
         # Upload Node.js file
         node_file_content = """
@@ -403,9 +384,7 @@ public class Program
 }
 """
 
-        csharp_file_id = await upload_file(
-            "combinations.cs", csharp_file_content, "csharp"
-        )
+        csharp_file_id = await upload_file("combinations.cs", csharp_file_content, "csharp")
 
         # List files
         await list_files()

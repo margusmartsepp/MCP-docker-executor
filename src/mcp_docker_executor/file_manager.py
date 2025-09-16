@@ -55,9 +55,7 @@ class FileManager:
             with open(metadata_path, "w") as f:
                 json.dump(metadata, f, indent=2)
 
-            return FileUploadResponse(
-                success=True, file_id=file_id, file_path=str(file_path)
-            )
+            return FileUploadResponse(success=True, file_id=file_id, file_path=str(file_path))
 
         except Exception as e:
             return FileUploadResponse(success=False, error_message=str(e))
@@ -81,9 +79,7 @@ class FileManager:
                             metadata = json.load(f)
 
                         # Remove file_path for security
-                        safe_metadata = {
-                            k: v for k, v in metadata.items() if k != "file_path"
-                        }
+                        safe_metadata = {k: v for k, v in metadata.items() if k != "file_path"}
                         files.append(safe_metadata)
                         total_count += 1
 
@@ -112,9 +108,7 @@ class FileManager:
                     # Read file content
                     file_path = Path(metadata["file_path"])
                     if file_path.exists():
-                        with open(
-                            file_path, encoding=metadata.get("encoding", "utf-8")
-                        ) as f:
+                        with open(file_path, encoding=metadata.get("encoding", "utf-8")) as f:
                             content = f.read()
 
                         metadata["content"] = content

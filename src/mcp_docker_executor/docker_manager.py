@@ -99,9 +99,7 @@ class DockerManager:
                         image_id=image.id,
                         image_name=image_name,
                         build_logs=[
-                            str(log.get("stream", ""))
-                            if isinstance(log, dict) and "stream" in log
-                            else str(log)
+                            str(log.get("stream", "")) if isinstance(log, dict) and "stream" in log else str(log)
                             for log in build_logs
                         ],
                         success=True,
@@ -113,9 +111,7 @@ class DockerManager:
                         success=False,
                         error_message=f"Build failed: {e!s}",
                         build_logs=[
-                            str(log.get("stream", ""))
-                            if isinstance(log, dict) and "stream" in log
-                            else str(log)
+                            str(log.get("stream", "")) if isinstance(log, dict) and "stream" in log else str(log)
                             for log in build_logs
                         ],
                     )
@@ -243,9 +239,7 @@ class DockerManager:
 
             return ExecuteCodeResponse(
                 execution_id=execution_id,
-                status=ExecutionStatus.COMPLETED
-                if result.exit_code == 0
-                else ExecutionStatus.FAILED,
+                status=ExecutionStatus.COMPLETED if result.exit_code == 0 else ExecutionStatus.FAILED,
                 stdout=stdout,
                 stderr=stderr,
                 exit_code=result.exit_code,
@@ -260,9 +254,7 @@ class DockerManager:
                 error_message=str(e),
             )
 
-    async def _prepare_code_execution(
-        self, request: ExecuteCodeRequest
-    ) -> tuple[str, str | None]:
+    async def _prepare_code_execution(self, request: ExecuteCodeRequest) -> tuple[str, str | None]:
         """Prepare the execution environment for code."""
         if request.language == Language.PYTHON:
             # Encode the Python code in base64 to avoid shell escaping issues
@@ -323,9 +315,7 @@ rm -rf /tmp/csharp_exec_{int(time.time())}"""
         """Delete an uploaded file."""
         return await self.file_manager.delete_file(file_id)
 
-    async def execute_uploaded_file(
-        self, request: FileExecutionRequest
-    ) -> ExecuteCodeResponse:
+    async def execute_uploaded_file(self, request: FileExecutionRequest) -> ExecuteCodeResponse:
         """Execute an uploaded file."""
         file_info = await self.file_manager.get_file(request.file_id)
         if not file_info:
@@ -353,9 +343,7 @@ rm -rf /tmp/csharp_exec_{int(time.time())}"""
         return await self.file_manager.get_stats()
 
     # Package management methods
-    async def install_package(
-        self, request: InstallPackageRequest
-    ) -> InstallPackageResponse:
+    async def install_package(self, request: InstallPackageRequest) -> InstallPackageResponse:
         """Install a package in a Docker image or container."""
         try:
             if request.build_new_image:
@@ -366,9 +354,7 @@ rm -rf /tmp/csharp_exec_{int(time.time())}"""
             logger.exception("Package installation failed")
             return InstallPackageResponse(success=False, error_message=str(e))
 
-    async def _build_image_with_package(
-        self, request: InstallPackageRequest
-    ) -> InstallPackageResponse:
+    async def _build_image_with_package(self, request: InstallPackageRequest) -> InstallPackageResponse:
         """Build a new image with the package installed."""
         try:
             # Get the base image
@@ -394,9 +380,7 @@ USER sandboxuser
 """
 
             # Sanitize package name for Docker tag
-            safe_package_name = re.sub(
-                r"[^a-zA-Z0-9-]", "-", request.package_name
-            ).lower()
+            safe_package_name = re.sub(r"[^a-zA-Z0-9-]", "-", request.package_name).lower()
             safe_package_name = re.sub(r"-+", "-", safe_package_name).strip("-")
 
             # Generate new image name
@@ -416,28 +400,20 @@ USER sandboxuser
                     success=True,
                     new_image_id=image.id,
                     build_logs=[
-                        str(log.get("stream", ""))
-                        if isinstance(log, dict) and "stream" in log
-                        else str(log)
+                        str(log.get("stream", "")) if isinstance(log, dict) and "stream" in log else str(log)
                         for log in build_logs
                     ],
                 )
 
         except Exception as e:
             logger.exception("Failed to build image with package")
-            return InstallPackageResponse(
-                success=False, error_message=f"Build failed: {e!s}"
-            )
+            return InstallPackageResponse(success=False, error_message=f"Build failed: {e!s}")
 
-    async def _install_package_in_container(
-        self, request: InstallPackageRequest
-    ) -> InstallPackageResponse:
+    async def _install_package_in_container(self, request: InstallPackageRequest) -> InstallPackageResponse:
         """Install package in a running container."""
         try:
             # Find running containers for the image
-            containers = self.client.containers.list(
-                filters={"ancestor": request.image_id}
-            )
+            containers = self.client.containers.list(filters={"ancestor": request.image_id})
             if not containers:
                 return InstallPackageResponse(
                     success=False,
@@ -482,16 +458,10 @@ USER sandboxuser
             if result.exit_code == 0:
                 return InstallPackageResponse(
                     success=True,
-                    build_logs=[
-                        result.output.decode()
-                        if result.output
-                        else "Package installed successfully"
-                    ],
+                    build_logs=[result.output.decode() if result.output else "Package installed successfully"],
                 )
             else:
-                output_msg = (
-                    result.output.decode() if result.output else "Unknown error"
-                )
+                output_msg = result.output.decode() if result.output else "Unknown error"
                 return InstallPackageResponse(
                     success=False,
                     error_message=f"Package installation failed: {output_msg}",
@@ -499,17 +469,13 @@ USER sandboxuser
 
         except Exception as e:
             logger.exception("Package installation in container failed")
-            return InstallPackageResponse(
-                success=False, error_message=f"Package installation failed: {e!s}"
-            )
+            return InstallPackageResponse(success=False, error_message=f"Package installation failed: {e!s}")
 
     def _get_package_install_command(
         self, language: Language, package_name: str, package_version: str | None = None
     ) -> str:
         """Get the package installation command for a language."""
-        package_spec = (
-            f"{package_name}=={package_version}" if package_version else package_name
-        )
+        package_spec = f"{package_name}=={package_version}" if package_version else package_name
 
         if language == Language.PYTHON:
             return f"RUN pip install {package_spec}"
@@ -535,11 +501,7 @@ dotnet add package {package_spec}"""
         try:
             container = self.client.containers.get(container_id)
 
-            package_spec = (
-                f"{package_name}=={package_version}"
-                if package_version
-                else package_name
-            )
+            package_spec = f"{package_name}=={package_version}" if package_version else package_name
 
             if language == Language.PYTHON:
                 cmd = ["pip", "install", package_spec]
@@ -568,9 +530,7 @@ dotnet add package {package_spec}"""
                 result = container.exec_run(cmd)
 
             if result.exit_code == 0:
-                logger.info(
-                    f"Successfully installed {package_spec} in container {container_id}"
-                )
+                logger.info(f"Successfully installed {package_spec} in container {container_id}")
                 return True
             else:
                 logger.error(
@@ -583,9 +543,7 @@ dotnet add package {package_spec}"""
             logger.exception(f"Error installing package in container {container_id}")
             return False
 
-    async def start_streaming_execution(
-        self, execution_id: str, request: "StreamExecutionRequest"
-    ) -> None:
+    async def start_streaming_execution(self, execution_id: str, request: "StreamExecutionRequest") -> None:
         """Start a streaming execution and store it in the tracking dict."""
         try:
             # Store execution metadata
@@ -618,11 +576,7 @@ dotnet add package {package_spec}"""
             response = await self.execute_code(execution_data["request"])
 
             # Update execution status
-            execution_data["status"] = (
-                "completed"
-                if response.status == ExecutionStatus.COMPLETED
-                else "failed"
-            )
+            execution_data["status"] = "completed" if response.status == ExecutionStatus.COMPLETED else "failed"
             execution_data["response"] = response
             execution_data["end_time"] = time.time()
 

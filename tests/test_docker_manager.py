@@ -25,9 +25,7 @@ class TestDockerManager:
         """Test Docker health check."""
         assert await docker_manager.health_check() is True
 
-    async def test_create_multi_language_image(
-        self, docker_manager: DockerManager
-    ) -> None:
+    async def test_create_multi_language_image(self, docker_manager: DockerManager) -> None:
         """Test creating an image with multiple languages."""
         request = CreateImageRequest(
             languages=[Language.PYTHON, Language.NODE, Language.CSHARP],
@@ -46,9 +44,7 @@ class TestDockerManager:
 
     async def test_create_python_image(self, docker_manager):
         """Test creating a Python-only image."""
-        request = CreateImageRequest(
-            languages=[Language.PYTHON], image_name="test-python"
-        )
+        request = CreateImageRequest(languages=[Language.PYTHON], image_name="test-python")
 
         response = await docker_manager.create_image(request)
 
@@ -74,9 +70,7 @@ class TestDockerManager:
 
     async def test_create_csharp_image(self, docker_manager):
         """Test creating a C#-only image."""
-        request = CreateImageRequest(
-            languages=[Language.CSHARP], image_name="test-csharp"
-        )
+        request = CreateImageRequest(languages=[Language.CSHARP], image_name="test-csharp")
 
         response = await docker_manager.create_image(request)
 
@@ -147,9 +141,7 @@ print(f"factorial(5) = {factorial(5)}")
 print(f"factorial(10) = {factorial(10)}")
 """
 
-        request = ExecuteCodeRequest(
-            language=Language.PYTHON, code=code, image_id=python_image_id
-        )
+        request = ExecuteCodeRequest(language=Language.PYTHON, code=code, image_id=python_image_id)
 
         response = await docker_manager.execute_code(request)
 
@@ -172,9 +164,7 @@ console.log(`factorial(5) = ${factorial(5)}`);
 console.log(`factorial(10) = ${factorial(10)}`);
 """
 
-        request = ExecuteCodeRequest(
-            language=Language.NODE, code=code, image_id=node_image_id
-        )
+        request = ExecuteCodeRequest(language=Language.NODE, code=code, image_id=node_image_id)
 
         response = await docker_manager.execute_code(request)
 
@@ -207,9 +197,7 @@ public class Program
 }
 """
 
-        request = ExecuteCodeRequest(
-            language=Language.CSHARP, code=code, image_id=csharp_image_id
-        )
+        request = ExecuteCodeRequest(language=Language.CSHARP, code=code, image_id=csharp_image_id)
 
         response = await docker_manager.execute_code(request)
 
@@ -376,9 +364,7 @@ public class Program
         # Execute the file
         from mcp_docker_executor.models import FileExecutionRequest
 
-        exec_request = FileExecutionRequest(
-            file_id=upload_response.file_id, image_id=python_image_id
-        )
+        exec_request = FileExecutionRequest(file_id=upload_response.file_id, image_id=python_image_id)
 
         exec_response = await docker_manager.execute_uploaded_file(exec_request)
         assert exec_response.status == "completed"

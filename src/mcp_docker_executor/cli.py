@@ -28,9 +28,7 @@ class MCPCLI:
         except Exception:
             return False
 
-    async def create_image(
-        self, languages: list[str], image_name: str | None = None
-    ) -> dict[str, Any]:
+    async def create_image(self, languages: list[str], image_name: str | None = None) -> dict[str, Any]:
         """Create a new Docker image."""
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -43,9 +41,7 @@ class MCPCLI:
             )
             return response.json()
 
-    async def execute_code(
-        self, language: str, code: str, image_id: str | None = None
-    ) -> dict[str, Any]:
+    async def execute_code(self, language: str, code: str, image_id: str | None = None) -> dict[str, Any]:
         """Execute code in a container."""
         async with httpx.AsyncClient(timeout=120.0) as client:
             response = await client.post(
@@ -183,9 +179,7 @@ async def main():
     delete_parser.add_argument("file_id", help="File ID to delete")
 
     # Execute file command
-    exec_file_parser = subparsers.add_parser(
-        "exec-file", help="Execute an uploaded file"
-    )
+    exec_file_parser = subparsers.add_parser("exec-file", help="Execute an uploaded file")
     exec_file_parser.add_argument("file_id", help="File ID to execute")
     exec_file_parser.add_argument("--image-id", help="Docker image ID to use")
 
@@ -255,9 +249,7 @@ async def main():
                 print(f"Exit Code: {result['exit_code']}")
 
         elif args.command == "install-package":
-            result = await cli.install_package(
-                args.image_id, args.language, args.package_name, args.build_new_image
-            )
+            result = await cli.install_package(args.image_id, args.language, args.package_name, args.build_new_image)
             if result["success"]:
                 print("✅ Package installed successfully!")
                 if result.get("new_image_id"):
@@ -289,9 +281,7 @@ async def main():
             if result["success"]:
                 print("✅ File deleted successfully!")
             else:
-                print(
-                    f"❌ File deletion failed: {result.get('detail', 'Unknown error')}"
-                )
+                print(f"❌ File deletion failed: {result.get('detail', 'Unknown error')}")
                 sys.exit(1)
 
         elif args.command == "exec-file":

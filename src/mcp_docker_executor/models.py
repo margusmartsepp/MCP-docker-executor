@@ -91,9 +91,7 @@ class ExecuteCodeResponse(BaseModel):
 class FileTransferRequest(BaseModel):
     """Request for file transfer operations."""
 
-    operation: str = Field(
-        ..., description="Operation type: upload, download, list, delete, mkdir"
-    )
+    operation: str = Field(..., description="Operation type: upload, download, list, delete, mkdir")
     container_id: str
     remote_path: str
     local_path: str | None = None

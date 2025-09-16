@@ -115,17 +115,11 @@ def pytest_collection_modifyitems(config: Any, items: list[Any]) -> None:
     """Modify test collection to add default markers."""
     for item in items:
         # Add integration marker by default if no specific marker is present
-        if not any(
-            marker.name in ["unit", "integration", "e2e"]
-            for marker in item.iter_markers()
-        ):
+        if not any(marker.name in ["unit", "integration", "e2e"] for marker in item.iter_markers()):
             item.add_marker(pytest.mark.integration)
 
         # Add docker marker for tests that use Docker
-        if (
-            "docker_manager" in item.fixturenames
-            or "test_image_id" in item.fixturenames
-        ):
+        if "docker_manager" in item.fixturenames or "test_image_id" in item.fixturenames:
             item.add_marker(pytest.mark.docker)
 
 

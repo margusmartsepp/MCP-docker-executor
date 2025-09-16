@@ -59,9 +59,7 @@ class TestModels:
     def test_resource_limits_validation(self):
         """Test ResourceLimits validation."""
         # Valid values
-        limits = ResourceLimits(
-            memory_mb=1024, cpu_cores=2.0, timeout_seconds=600, network_enabled=True
-        )
+        limits = ResourceLimits(memory_mb=1024, cpu_cores=2.0, timeout_seconds=600, network_enabled=True)
 
         assert limits.memory_mb == 1024
         assert limits.cpu_cores == 2.0
@@ -90,9 +88,7 @@ class TestModels:
     def test_create_image_request_validation(self):
         """Test CreateImageRequest validation."""
         # Valid request
-        request = CreateImageRequest(
-            languages=[Language.PYTHON, Language.NODE], image_name="test-image"
-        )
+        request = CreateImageRequest(languages=[Language.PYTHON, Language.NODE], image_name="test-image")
 
         assert request.languages == [Language.PYTHON, Language.NODE]
         assert request.image_name == "test-image"
@@ -110,9 +106,7 @@ class TestModels:
     def test_execute_code_request_validation(self):
         """Test ExecuteCodeRequest validation."""
         # Valid request
-        request = ExecuteCodeRequest(
-            language=Language.PYTHON, code="print('Hello World!')"
-        )
+        request = ExecuteCodeRequest(language=Language.PYTHON, code="print('Hello World!')")
 
         assert request.language == Language.PYTHON
         assert request.code == "print('Hello World!')"
@@ -153,9 +147,7 @@ class TestModels:
     def test_install_package_request_validation(self):
         """Test InstallPackageRequest validation."""
         # Valid request
-        request = InstallPackageRequest(
-            image_id="test-image-id", language=Language.PYTHON, package_name="requests"
-        )
+        request = InstallPackageRequest(image_id="test-image-id", language=Language.PYTHON, package_name="requests")
 
         assert request.image_id == "test-image-id"
         assert request.language == Language.PYTHON
@@ -174,9 +166,7 @@ class TestModels:
     def test_response_models(self):
         """Test response model creation."""
         # CreateImageResponse
-        response = CreateImageResponse(
-            success=True, image_id="test-image-id", image_name="test-image"
-        )
+        response = CreateImageResponse(success=True, image_id="test-image-id", image_name="test-image")
 
         assert response.success
         assert response.image_id == "test-image-id"
@@ -201,9 +191,7 @@ class TestModels:
         assert response.execution_time_seconds is None
 
         # FileUploadResponse
-        response = FileUploadResponse(
-            success=True, file_id="test-file-id", file_path="/tmp/test.py"
-        )
+        response = FileUploadResponse(success=True, file_id="test-file-id", file_path="/tmp/test.py")
 
         assert response.success
         assert response.file_id == "test-file-id"
