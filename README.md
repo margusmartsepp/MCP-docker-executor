@@ -25,8 +25,8 @@ A Python-based Master Control Program (MCP) server that creates Linux Docker ima
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd mcp-docker-executor
+   git clone https://github.com/margusmartsepp/MCP-docker-executor.git
+   cd MCP-docker-executor
    ```
 
 2. **Install dependencies with uv**:
@@ -300,19 +300,34 @@ The system consists of several key components:
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed instructions on how to:
+
+1. Set up your development environment
+2. Follow our coding standards
+3. Run tests and quality checks
+4. Submit pull requests
+
+For questions or discussions, please open an issue on GitHub.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to uphold this code.
 
 ## License
 
-MIT License - see LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
 For issues and questions:
-- Create an issue on GitHub
-- Check the documentation in `docs/`
-- Review test examples in `tests/`
+- 📝 [Create an issue on GitHub](https://github.com/margusmartsepp/MCP-docker-executor/issues)
+- 📚 Check the documentation in `docs/`
+- 🧪 Review test examples in `tests/`
+- 💬 Join discussions in GitHub Discussions
+
+## Project Links
+
+- 🏠 **Homepage**: [https://github.com/margusmartsepp/MCP-docker-executor](https://github.com/margusmartsepp/MCP-docker-executor)
+- 📦 **Repository**: [https://github.com/margusmartsepp/MCP-docker-executor.git](https://github.com/margusmartsepp/MCP-docker-executor.git)
+- 🐛 **Issues**: [https://github.com/margusmartsepp/MCP-docker-executor/issues](https://github.com/margusmartsepp/MCP-docker-executor/issues)
+- 📖 **Documentation**: [https://github.com/margusmartsepp/MCP-docker-executor#readme](https://github.com/margusmartsepp/MCP-docker-executor#readme)
