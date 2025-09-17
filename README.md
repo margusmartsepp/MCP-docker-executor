@@ -96,6 +96,8 @@ uv run python -m mcp_docker_executor.cli exec csharp "Console.WriteLine(\"Hello 
 
 ### Setup
 
+#### Method 1: Using MCP CLI (Recommended)
+
 1. **Install the MCP server in Claude Desktop**:
 
    ```bash
@@ -105,6 +107,72 @@ uv run python -m mcp_docker_executor.cli exec csharp "Console.WriteLine(\"Hello 
 2. **Restart Claude Desktop** to load the new MCP server.
 
 3. **Verify connection** - You should see the MCP Docker Executor tools available in Claude Desktop.
+
+#### Method 2: Manual Configuration
+
+If the automatic installation doesn't work, you can manually configure the MCP server:
+
+1. **Find your Claude Desktop config file**:
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Linux**: `~/.config/claude-desktop/config.json`
+
+2. **Add the MCP server configuration**:
+
+   ```json
+   {
+     "mcpServers": {
+       "mcp-docker-executor": {
+         "command": "C:\\Users\\margu\\Vibe\\.venv\\Scripts\\python.exe",
+         "args": [
+           "-m",
+           "mcp_docker_executor.mcp_server"
+         ],
+         "cwd": "C:\\Users\\margu\\Vibe"
+       }
+     }
+   }
+   ```
+
+   **Note**: Update the paths to match your system:
+   - `command`: Full path to your Python executable
+   - `cwd`: Full path to your project directory
+
+3. **Restart Claude Desktop** to load the configuration.
+
+#### Using MCP Inspector
+
+The MCP Inspector is a powerful tool for debugging and testing MCP servers:
+
+1. **Install MCP Inspector**:
+
+   ```bash
+   npm install -g @modelcontextprotocol/inspector
+   ```
+
+2. **Run the inspector**:
+
+   ```bash
+   mcp-inspector
+   ```
+
+3. **Connect to your MCP server**:
+   - In the inspector, click "Connect to Server"
+   - Enter the command: `C:\Users\margu\Vibe\.venv\Scripts\python.exe`
+   - Enter the args: `["-m", "mcp_docker_executor.mcp_server"]`
+   - Enter the working directory: `C:\Users\margu\Vibe`
+
+4. **Test the tools**:
+   - Use the inspector to test individual tools
+   - View request/response details
+   - Debug connection issues
+   - Verify tool parameters and outputs
+
+#### Verification Steps
+
+1. **Check Claude Desktop logs** for connection status
+2. **Look for MCP tools** in Claude's interface
+3. **Test basic functionality** with a simple command like "Check Docker health"
 
 ### Example Usage
 

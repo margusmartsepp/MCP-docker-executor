@@ -4,6 +4,8 @@ This document demonstrates how to use the MCP Docker Executor with Claude Deskto
 
 ## Setup
 
+### Method 1: Using MCP CLI (Recommended)
+
 1. **Install the MCP server in Claude Desktop**:
 
    ```bash
@@ -13,6 +15,72 @@ This document demonstrates how to use the MCP Docker Executor with Claude Deskto
 2. **Restart Claude Desktop** to load the new MCP server.
 
 3. **Verify connection** - You should see the MCP Docker Executor tools available in Claude Desktop.
+
+### Method 2: Manual Configuration
+
+If the automatic installation doesn't work, you can manually configure the MCP server:
+
+1. **Find your Claude Desktop config file**:
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Linux**: `~/.config/claude-desktop/config.json`
+
+2. **Add the MCP server configuration**:
+
+   ```json
+   {
+     "mcpServers": {
+       "mcp-docker-executor": {
+         "command": "C:\\Users\\margu\\Vibe\\.venv\\Scripts\\python.exe",
+         "args": [
+           "-m",
+           "mcp_docker_executor.mcp_server"
+         ],
+         "cwd": "C:\\Users\\margu\\Vibe"
+       }
+     }
+   }
+   ```
+
+   **Note**: Update the paths to match your system:
+   - `command`: Full path to your Python executable (use `uv run python -c "import sys; print(sys.executable)"` to find it)
+   - `cwd`: Full path to your project directory
+
+3. **Restart Claude Desktop** to load the configuration.
+
+### Using MCP Inspector
+
+The MCP Inspector is a powerful tool for debugging and testing MCP servers:
+
+1. **Install MCP Inspector**:
+
+   ```bash
+   npm install -g @modelcontextprotocol/inspector
+   ```
+
+2. **Run the inspector**:
+
+   ```bash
+   mcp-inspector
+   ```
+
+3. **Connect to your MCP server**:
+   - In the inspector, click "Connect to Server"
+   - Enter the command: `C:\Users\margu\Vibe\.venv\Scripts\python.exe`
+   - Enter the args: `["-m", "mcp_docker_executor.mcp_server"]`
+   - Enter the working directory: `C:\Users\margu\Vibe`
+
+4. **Test the tools**:
+   - Use the inspector to test individual tools
+   - View request/response details
+   - Debug connection issues
+   - Verify tool parameters and outputs
+
+### Verification Steps
+
+1. **Check Claude Desktop logs** for connection status
+2. **Look for MCP tools** in Claude's interface
+3. **Test basic functionality** with a simple command like "Check Docker health"
 
 ## Example: Fibonacci Function Implementation
 
@@ -173,7 +241,49 @@ If the MCP server doesn't appear in Claude Desktop:
    uv run python -m mcp_docker_executor.mcp_server
    ```
 
-4. **Restart Claude Desktop** completely after configuration changes
+4. **Use MCP Inspector to debug**:
+
+   ```bash
+   # Install inspector if not already installed
+   npm install -g @modelcontextprotocol/inspector
+
+   # Run inspector
+   mcp-inspector
+   ```
+
+   Then connect with:
+   - Command: `C:\Users\margu\Vibe\.venv\Scripts\python.exe`
+   - Args: `["-m", "mcp_docker_executor.mcp_server"]`
+   - Working Directory: `C:\Users\margu\Vibe`
+
+5. **Restart Claude Desktop** completely after configuration changes
+
+### Using MCP Inspector for Debugging
+
+The MCP Inspector is invaluable for troubleshooting MCP server issues:
+
+1. **Install and run the inspector**:
+
+   ```bash
+   npm install -g @modelcontextprotocol/inspector
+   mcp-inspector
+   ```
+
+2. **Test connection**:
+   - Use the same configuration as Claude Desktop
+   - Verify the server starts without errors
+   - Check that tools are listed correctly
+
+3. **Test individual tools**:
+   - Try each tool with sample parameters
+   - Verify responses match expected format
+   - Check for error messages or timeouts
+
+4. **Common issues found with inspector**:
+   - **Path issues**: Wrong Python executable or working directory
+   - **Permission issues**: Docker not accessible or running
+   - **Module issues**: Missing dependencies or import errors
+   - **Port conflicts**: Another service using the same port
 
 ### Execution Failures
 
