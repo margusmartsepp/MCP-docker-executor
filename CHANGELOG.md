@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added detailed documentation for MCP server setup and configuration
 - Added example prompts for Python, Node.js, C#, and multi-language scenarios
 - Added troubleshooting guide for common Claude Desktop integration issues
+- Added RELEASE.md with comprehensive release process documentation
+- Added MCP Inspector setup and debugging instructions
+- Added manual configuration methods with exact JSON examples
 - Comprehensive CONTRIBUTING.md guide
 - CODE_OF_CONDUCT.md following Contributor Covenant
 - CHANGELOG.md for version tracking

@@ -508,6 +508,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 3. Run tests and quality checks
 4. Submit pull requests
 
+For release information, see our [Release Process](RELEASE.md) documentation.
+
 For questions or discussions, please open an issue on GitHub.
 
 ## Code of Conduct
