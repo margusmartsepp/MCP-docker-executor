@@ -92,6 +92,128 @@ uv run python -m mcp_docker_executor.cli exec node "console.log('Hello from Node
 uv run python -m mcp_docker_executor.cli exec csharp "Console.WriteLine(\"Hello from C#!\");"
 ```
 
+## Claude Desktop Integration
+
+### Setup
+
+1. **Install the MCP server in Claude Desktop**:
+
+   ```bash
+   uv run mcp install src/mcp_docker_executor/mcp_server.py
+   ```
+
+2. **Restart Claude Desktop** to load the new MCP server.
+
+3. **Verify connection** - You should see the MCP Docker Executor tools available in Claude Desktop.
+
+### Example Usage
+
+Here's a real example of using the MCP Docker Executor through Claude Desktop:
+
+**User Prompt:**
+> "Can you write a Python Fibonacci function and run it with mcp-docker-executor?"
+
+**Claude's Response:**
+I'll create Python Fibonacci functions and execute them using the MCP Docker Executor. Let me write efficient iterative implementations and run them in a Docker container.
+
+**Generated Code:**
+
+```python
+def fibonacci(n):
+    """Calculate the nth Fibonacci number using iterative approach."""
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+
+    return b
+
+def fibonacci_sequence(n):
+    """Generate Fibonacci sequence up to n terms."""
+    if n <= 0:
+        return []
+
+    sequence = []
+    a, b = 0, 1
+
+    for i in range(n):
+        if i == 0:
+            sequence.append(0)
+        elif i == 1:
+            sequence.append(1)
+        else:
+            sequence.append(a + b)
+            a, b = b, a + b
+
+    return sequence
+
+# Test the functions
+print("Testing Fibonacci functions:")
+print("-" * 30)
+
+# Test individual numbers
+test_numbers = [0, 1, 5, 10, 15]
+for num in test_numbers:
+    result = fibonacci(num)
+    print(f"fibonacci({num}) = {result}")
+
+print("\nFibonacci sequence (first 15 numbers):")
+seq = fibonacci_sequence(15)
+print(seq)
+```
+
+**Execution Result:**
+
+- **Execution ID**: `exec_1758067574_b0bc8347`
+- **Status**: `completed`
+- **Exit Code**: `0`
+- **Execution Time**: `0.00s`
+
+**Output:**
+
+```text
+Testing Fibonacci functions:
+------------------------------
+fibonacci(0) = 0
+fibonacci(1) = 1
+fibonacci(5) = 5
+fibonacci(10) = 55
+fibonacci(15) = 610
+
+Fibonacci sequence (first 15 numbers):
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]
+```
+
+**Analysis:**
+Perfect! The functions executed successfully in the Docker container. The iterative approach is efficient and handles edge cases properly. The results show:
+
+- Individual Fibonacci numbers: F(0)=0, F(1)=1, F(5)=5, F(10)=55, F(15)=610
+- Complete sequence: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]
+
+### Available Tools in Claude Desktop
+
+When connected, you'll have access to these tools:
+
+- **`execute_code`** - Execute Python, Node.js, C#, or Bash code
+- **`create_image`** - Create custom Docker images with specific runtimes
+- **`install_package`** - Install packages (pip, npm, nuget, apt)
+- **`upload_file`** - Upload and manage code files
+- **`execute_uploaded_file`** - Run uploaded files
+- **`list_files`** - List all uploaded files
+- **`delete_file`** - Remove uploaded files
+- **`docker_health`** - Check Docker connection status
+
+### Tips for Claude Desktop Usage
+
+1. **Be specific about language**: Always specify the programming language when requesting code execution
+2. **Include test cases**: Ask Claude to include test cases and examples in the generated code
+3. **Request explanations**: Ask for explanations of the results and any optimization opportunities
+4. **Use file uploads**: For complex code, consider asking Claude to upload files for better organization
+
 ## Docker Image
 
 The project includes a comprehensive Dockerfile that creates a multi-language execution environment:
